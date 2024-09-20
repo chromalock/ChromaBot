@@ -1,26 +1,36 @@
-const { SlashCommandBuilder, EmbedBuilder, time, TimestampStyles } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, time, TimestampStyles } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('unban')
-        .setDescription('Replies with Pong'),
+    .setName('unban')
+    .setDescription("Select a member to unban")
+    .addUserOption(option => 
+        option
+            .setName('target')
+            .setDescription('The member to unban')
+            .setRequired(true))
+        .addStringOption(option =>
+            option
+                .setName('reason')
+                .setDescription('The reason for unban.'))
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async execute(interaction) {
-        // const date = new Date();
-        // const timeString = time(date);
-        // const relative = time(date, TimestampStyles.RelativeTime);
-        
-        let testEmbed = new EmbedBuilder()
-            .setDescription("Pong")
-            .setColor("#bc0000")
-            .setDescription('pong')
-            // .addFields(
-            //     {name: 'test 1', value: '1'},
-            //     {name: 'test 2', value: '2'},
-            //     {name: 'Banned In', value: interaction.channel.name},
-            //     {name: 'Time', value: relative},
-            // )
-            .setImage('https://cdn.discordapp.com/attachments/1257835351825973260/1286178603704516650/cat-driving.gif?ex=66ecf6ab&is=66eba52b&hm=4deb3d5e22313bbc9d220dcff940d3ef3357a3c2ec8fe66a9538cdad9ecfa521&');
+        const target = interaction.options.getUser('target');
+        const reason = interaction.options.getString('reason') ?? 'No reason given.';
 
-        await interaction.reply({ embeds: [testEmbed] });
+        const date = new Date();
+        const relative = time(date, TimestampStyles.RelativeTime);
+        let banEmbed = new EmbedBuilder()
+            .setDescription("Ban Management")
+            .setColor("#1EFF00")
+            .addFields(
+                {name: 'User', value: `${target} with ID ${target.id} no longer banned`},
+                {name: 'Action By', value: `<@${interaction.member.id}> with ID ${interaction.member.id}`},
+                {name: 'Time', value: relative},
+                {name: 'Reason', value: reason}
+            );
+
+        await interaction.reply({ embeds: [banEmbed] });
+        await interaction.guild.members.unban(target, reason);
     },
 }

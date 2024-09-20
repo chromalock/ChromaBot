@@ -3,11 +3,11 @@ const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, time, TimestampS
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('untimeout')
-        .setDescription("Select a member to timeout with a duration.")
+        .setDescription("Select a member to un-timeout.")
         .addUserOption(option => 
             option
                 .setName('target')
-                .setDescription('The member to timeout')
+                .setDescription('The member to un-timeout')
                 .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
         async execute(interaction) {
