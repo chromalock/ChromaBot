@@ -23,12 +23,11 @@ module.exports = {
             const target = interaction.options.getUser('target');
             const duration = interaction.options.getNumber('duration'); // always hours
             const reason = interaction.options.getString('reason') ?? 'No reason provided';
-            // const dirInMS = duration * 60 * 60 * 1000;
-            const dirInMS = 1000; // debug diration
+            const dirInMS = duration * 60 * 60 * 1000;
+            // const dirInMS = 1000; // debug diration
             const member = interaction.options.getMember('target');
 
             const date = new Date();
-            const timeString = time(date);
             const relative = time(date, TimestampStyles.RelativeTime);
             let timeoutEmbed = new EmbedBuilder()
                 .setDescription("Timeout Management")
