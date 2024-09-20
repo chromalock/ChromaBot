@@ -2,18 +2,18 @@ const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, time, TimestampS
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('unban')
-    .setDescription("Select a member to unban")
-    .addUserOption(option => 
-        option
-            .setName('target')
-            .setDescription('The member to unban')
-            .setRequired(true))
-        .addStringOption(option =>
+        .setName('unban')
+        .setDescription("Select a member to unban")
+        .addUserOption(option => 
             option
-                .setName('reason')
-                .setDescription('The reason for unban.'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+                .setName('target')
+                .setDescription('The member to unban')
+                .setRequired(true))
+            .addStringOption(option =>
+                option
+                    .setName('reason')
+                    .setDescription('The reason for unban.'))
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     async execute(interaction) {
         const target = interaction.options.getUser('target');
         const reason = interaction.options.getString('reason') ?? 'No reason given.';
